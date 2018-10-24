@@ -1,0 +1,4 @@
+**/+* filter=lfs diff=lfs merge=lfs -text
+**/out* filter=lfs diff=lfs merge=lfs -text
+**/=.kp filter=lfs diff=lfs merge=lfs -text
+**/=.dens filter=lfs diff=lfs merge=lfs -text
