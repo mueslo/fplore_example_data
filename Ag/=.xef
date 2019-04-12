@@ -1,0 +1,422 @@
+########################################################################
+# this file is part of the FPLO bandstructure package
+# it was created automatically
+# please dont delete this file nor
+# edit it, unless you really know what you are doing
+# any changes added by you may be lost if this file is recreated
+# by FPLO (which is the normal behaviour )
+# so keep duplicates of your changes somewhere else
+#
+########################################################################
+
+section header{
+
+  struct {char[*] application;char[*] description;} filetype
+  ={"xef","FPLO-Graphics"};
+
+  struct {char[*] mainversion;char[*] subversion;} version={"18.00","M-CPA"};
+
+
+  struct {char[*] hostname;char[*] date;char[*] by;} last_changes
+    ={"WXPC141-VM","Fri Feb 15 17:38:09 2019","xfplo (18.00-52)"};
+};
+
+
+section options{
+    logical empty_lattice=f;
+    logical write_tet_file=f;
+    logical calc_only_partially_occupied=t;
+    int part_occu_offset[2]={1,1};
+    struct {int type;char[*] description;} verbosity_level
+    ={100,"basic information     "};
+};
+
+
+section input_control{
+    struct{logical restrict;int bandmin;int bandmax;} bandinput={f,0,100000}; 
+};
+
+
+section mesh_generation{
+    struct {logical irreducible;int subdivision;
+               logical manualoverwrite; int xsubman;
+               int ysubman;int zsubman;
+               logical useboundarycell;
+               int irredtolexp;
+              } k_mesh
+    ={t,48,f,0,0,0,f,-6};
+};
+
+
+# for downward compatibility only we write the old boundary stuff
+struct{ 
+      struct {int type;char[*] description;} cell_type;
+      struct {int type;char[*] description;} cell_basis_type;
+      struct {int type;char[*] description;} cell_centering;
+      struct {real shift[3];
+              struct {int type;char[*] description;} basis;
+      }origin;
+      struct {
+              struct {real V1[3];real V2[3];real V3[3];}vectors;
+              struct {real d0;real d1;}distances[3];
+      }box;
+      struct {real P[3];real dist;}faces[*];
+}boundary={
+       {1,"Wigner-Seitz cell"},
+       {1,"Conventional basis vectors"},
+       {1,"Centered"},
+       {{0,0,0},{1,"Conventional basis vectors"}},
+       {{{1,0,0},
+       {0,1,0},
+       {0,0,1}},
+       { {0,1},{0,1},{0,1} }
+       },
+       {
+       {{-1,0,0},0},
+       {{1,0,0},1},
+       {{0,-1,0},0},
+       {{0,1,0},1},
+       {{0,0,-1},0},
+       {{0,0,1},1}}
+};
+
+struct{
+       struct{
+              char[*] name;
+              struct  {int type;char[*] description;} celltype;
+              struct{ 
+                    struct {int type;char[*] description;} cell_type;
+                    struct {int type;char[*] description;} cell_basis_type;
+                    struct {int type;char[*] description;} cell_centering;
+                    struct {real shift[3];
+                            struct {int type;char[*] description;} basis;
+                    }origin;
+                    struct {
+                            struct {real V1[3];real V2[3];real V3[3];}vectors;
+                            struct {real d0;real d1;}distances[3];
+                    }box;
+                    struct {real P[3];real dist;}faces[*];
+              }boundary;
+       struct{logical visible;logical drawfaces;char[*] facecolor;
+              char [*] facespecular;real faceshininess;
+              logical drawrim;char[*] rimcolor;real rimradius;
+              struct  {int type;char[*] description;} rimradiusunit;
+       }PolyhedronProperties;
+       }displayCell[*];}displayCells={{
+       {"Main Boundary",{1,"Main Boundary"},
+              {
+                     {1,"Wigner-Seitz cell"},
+                     {1,"Conventional basis vectors"},
+                     {1,"Centered"},
+                     {{0,0,0},{1,"Conventional basis vectors"}},
+                     {{{1,0,0},
+                     {0,1,0},
+                     {0,0,1}},
+                     { {0,1},{0,1},{0,1} }
+                     },
+                     {
+                     {{-1,0,0},0},
+                     {{1,0,0},1},
+                     {{0,-1,0},0},
+                     {{0,1,0},1},
+                     {{0,0,-1},0},
+                     {{0,0,1},1}}
+              },
+              {t,f,"4c00ffff","ffffff",50,t,"0",0.01,{0,"Relative to boundary"}}
+       },
+       {"Conventional",{2,"Conventional"},
+              {
+                     {0,"Cell/Box"},
+                     {1,"Conventional basis vectors"},
+                     {0,"None"},
+                     {{0,0,0},{1,"Conventional basis vectors"}},
+                     {{{1,0,0},
+                     {0,1,0},
+                     {0,0,1}},
+                     { {0,1},{0,1},{0,1} }
+                     },
+                     {
+                     {{-1,0,0},0},
+                     {{1,0,0},1},
+                     {{0,-1,0},0},
+                     {{0,1,0},1},
+                     {{0,0,-1},0},
+                     {{0,0,1},1}}
+              },
+              {f,f,"4c00ffff","ffffff",50,t,"ff7f00",0.015,{0,"Relative to boundary"}}
+       },
+       {"Primitive",{3,"Primitive"},
+              {
+                     {0,"Cell/Box"},
+                     {0,"Primitive basis vectors"},
+                     {0,"None"},
+                     {{0,0,0},{1,"Conventional basis vectors"}},
+                     {{{1,0,0},
+                     {0,1,0},
+                     {0,0,1}},
+                     { {0,1},{0,1},{0,1} }
+                     },
+                     {
+                     {{-1,0,0},0},
+                     {{1,0,0},1},
+                     {{0,-1,0},0},
+                     {{0,1,0},1},
+                     {{0,0,-1},0},
+                     {{0,0,1},1}}
+              },
+              {f,f,"4c00ffff","ffffff",50,t,"c00ff",0.015,{0,"Relative to boundary"}}
+       }}};
+
+
+  struct { 
+       struct  {int type;char[*] description;} axes_type; 
+       logical visible;
+       char[*] color[3]; 
+       struct{real radius;
+         struct  {int type;char[*] description;} radius_unit; 
+       }rod;
+       struct{logical visible;real radius;
+         struct  {int type;char[*] description;} radius_unit; 
+         real length;
+         struct  {int type;char[*] description;} length_unit; 
+       }tip;
+       struct {real length[3];
+         struct  {int type;char[*] description;} length_unit; 
+       } axislength;
+       struct {real origin[3];
+         struct  {int type;char[*] description;} origin_unit; 
+       } axisorigin;
+       struct{char[*]label;real shift[3];}axislabels[3];
+       real fontscale;char[*] fontcolor;
+       } axessystems[*]
+       ={
+       {
+         {0,"Cartesian"},
+         f,{"0","ff0000","ff00"},{0.01,{0,"Relative to boundary"}},
+         {t,2,{4,"times rod radius"},2.5,{5,"time tip radius"}},
+         {{0.55,0.55,0.55},{0,"Relative to boundary"}},
+         {{0,0,0},{1,"Current world units"}},
+         {{"x",{-0.25,-0.5,1.5}},{"y",{-0.25,-0.5,1.5}},{"z",{-0.25,-0.5,1.5}}},0.1,"0"
+       },
+       {
+         {1,"Conventional"},
+         f,{"0","ff0000","ff00"},{0.01,{0,"Relative to boundary"}},
+         {t,2,{4,"times rod radius"},2.5,{5,"time tip radius"}},
+         {{1,1,1},{1,"Current world units"}},
+         {{0,0,0},{6,"Conventional cell"}},
+         {{"a",{-0.25,-0.5,1.5}},{"b",{-0.25,-0.5,1.5}},{"c",{-0.25,-0.5,1.5}}},0.1,"0"
+       },
+       {
+         {2,"Primitive"},
+         f,{"0","ff0000","ff00"},{0.01,{0,"Relative to boundary"}},
+         {t,2,{4,"times rod radius"},2.5,{5,"time tip radius"}},
+         {{1,1,1},{1,"Current world units"}},
+         {{0,0,0},{7,"Primitive cell"}},
+         {{"a",{-0.25,-0.5,1.5}},{"b",{-0.25,-0.5,1.5}},{"c",{-0.25,-0.5,1.5}}},0.1,"0"
+       },
+       {
+         {4,"Frame Cartesian"},
+         f,{"0","ff0000","ff00"},{0.02,{0,"Relative to boundary"}},
+         {t,0.1,{4,"times rod radius"},0.3,{5,"time tip radius"}},
+         {{0.55,0.55,0.55},{0,"Relative to boundary"}},
+         {{0.86,0.14,0.09},{1,"Current world units"}},
+         {{"x",{-0.25,-0,-0}},{"y",{-0.25,-0,-0}},{"z",{-0.25,-0,-0}}},0.1,"0"
+       },
+       {
+         {5,"Frame Conventional"},
+         t,{"0","ff0000","ff00"},{0.02,{0,"Relative to boundary"}},
+         {t,0.1,{4,"times rod radius"},0.3,{5,"time tip radius"}},
+         {{1,1,1},{1,"Current world units"}},
+         {{0.14,0.14,0.09},{6,"Conventional cell"}},
+         {{"a",{-0.25,-0,-0}},{"b",{-0.25,-0,-0}},{"c",{-0.25,-0,-0}}},0.1,"0"
+       },
+       {
+         {6,"Frame Primitive"},
+         f,{"0","ff0000","ff00"},{0.02,{0,"Relative to boundary"}},
+         {t,0.1,{4,"times rod radius"},0.3,{5,"time tip radius"}},
+         {{1,1,1},{1,"Current world units"}},
+         {{0.14,0.14,0.09},{7,"Primitive cell"}},
+         {{"a",{-0.25,-0,-0}},{"b",{-0.25,-0,-0}},{"c",{-0.25,-0,-0}}},0.1,"0"
+       } 
+       };
+
+section plot{
+    logical clip_at_boundary=t;
+    logical plot_grid=f;
+    logical plot_irred_grid=f;
+    logical plot_tetras=f;
+    logical plot_cubes=f;
+    logical plot_fermi_surface=t;
+    logical plot_fill_triangles=t;
+    logical plot_special_points=f;
+    logical plot_velocity_legend=t;
+    logical plot_velocity_legend_unit=t;
+    logical plot_cut_contour=t;
+    logical plot_use_normals=t;
+    logical plot_use_subdivision=f;
+    struct {logical useminlabel;char[*] minlabel;
+               logical usemaxlabel;char[*] maxlabel;
+               logical usetitle;   char[*] title;
+               logical showunits;
+       }legendcontrol={f,"min",f,"max",f,"",t};
+    struct {real up[3];real z[3];real focus[3];real radius;
+            real scale;real theta;logical perspective;}view
+    ={{-0.254888849223453            ,-0.0983822649033135           ,0.961952495965387             },
+      {0.899871328130316             ,0.339981923559915             ,0.273210330078278             },
+      {0                             ,0                             ,0                             },
+      0.17                          ,1                             ,10                            ,f    };
+
+    struct{ logical locked; struct{int width;int height;}size;}canvas
+    ={t,{400,400}};
+
+struct{logical usefog;real density;real near;real far;
+          char[*] color;int mode;}fog
+={f,0.04,0.25,1.3,"ffffffff",3};
+struct{logical visible;logical userdefined;logical showpath;
+      struct{logical visible;
+             struct{int type;char[*] description;}PointType;
+             char[*] name;real point[3];real shift[3];
+             real pointradius;char[*] pointcolor;
+             char[*] textcolor;real fontscale;
+      }points[*];
+      logical usecommonproperties;
+      real pointradius;char[*] pointcolor;
+      char[*] textcolor;real fontscale;
+      char[*] pathcolor;real pathlinewidth;
+      struct {int type;char[*] description;} basis;
+   }SpecialSymPoints={
+f,f,t
+,{
+}
+,t,0.025,"ff0000","ff",0.1,"aa0000",3,{1,"cartesian (units 2pi)"}};
+    struct {
+      char[*] inner_rgb;
+      char[*] outer_rgb;
+      logical inner_velocity;
+      logical outer_velocity;
+      logical extern_coloring;
+      real velocity_interval[2];
+      real extern_color_interval[2];
+      logical take_default_velocity_intervall;
+      logical take_default_ext_col_intervall;
+      struct{real parameter;real hue;real sat;real val;}colormap[*];
+      logical interpolatergb;
+    }surface_colors
+    ={"ff4c4c4c","ffff0000"
+      ,t,t
+      ,f
+      ,{10                                     ,20                                     }
+      ,{0                                      ,1                                      }
+      ,t
+      ,t
+      ,{
+{0, 240, 255, 255},
+{1, 20, 255, 255}
+},
+t
+    };
+    struct {int type;char[*] description;} velocity_unit
+    ={1,"m/s"};
+    int velo_unit_factor=6;
+    int excol_unit_factor=0;
+    struct {
+      logical plot_cut;
+      real plane[3];
+      int number_of_cuts;
+      real distance_from;
+      real distance_to;
+    }surface_cuts
+    ={f
+      ,{0                             ,0                             ,1                             }
+      ,1
+      ,-0.2                          
+      ,0.2                           
+    };
+};
+
+
+section Lights{
+
+    struct {char[*] background;char[*] globalambient;
+            real globalambientfactor;
+            struct {struct  {int type;char[*] description;} type;
+                    char[*] name;logical active;
+                    char[*] diffuse;char[*] ambient;
+                    char [*] specular; real position[4];
+                    real spotdirection[3];real spotexponent;
+                    real spotcutoff;real constantattenuation;
+                    real linearattenuation;real quadraticattenuation;
+            }lights[*];
+    }lights
+    ={"ffffffff","ffffffff",0.5,{
+      {{0,"directional"},"side_dif_spec",t,"ff4c4c4c","ff000000","ffffffff",{1,1,0,1},{0,0,-1},0,180,1,0,0},
+      {{0,"directional"},"front_dif",t,"ffb2b2b2","ff000000","ff000000",{0,0,1,1},{0,0,-1},0,180,1,0,0}
+    }};
+};
+
+
+section fermi_suface{
+    real fermi_energy=7                             ;
+    logical use_default_ef=t;
+    char[*] bandfile="+band_kp";
+    char [*] bandweightsfile="+bweights_kp";
+    # this is obsolete
+    int band_index=1;
+    # and this is new
+    int band_indicesup[*]={0};
+    int band_indicesdn[*]={};
+# this is obsolete
+    int spin_sort=1;
+};
+
+
+section numerics{
+    real tolerance=1e-08                         ;
+};
+
+
+section temporary{
+    int iweight=1;
+  struct { 
+          logical handmade;
+          int bravaistype;
+          logical hexagonal;
+          logical rhombohedral;
+          struct {real V1[3];real V2[3];real V3[3];}convcell;
+          struct{char[*] symbol;real opmat[9];}ops[*];
+        } meshsymmetry
+       ={
+         f,0,f,f,
+         {{1,0,0},{0,1,0},{0,0,1}},
+        {          {"E",{1,0,0,0,1,0,0,0,1}}
+        }
+       };
+
+};
+
+
+# the following symmetry is used in empty lattice mode only!
+
+section symmetry{
+
+    struct {char[*] number;char[*] setting;char[*] symbol;}spacegroup
+    ={"225","default","225"};
+
+    struct {int type;char[*] description;} lengthunit
+    ={1,"Bohr radii"};
+
+    real lattice_constants[3]
+    ={7.55,7.55,7.55};
+
+    real axis_angles[3]
+    ={90.,90.,90.};
+
+    struct{logical active;
+           real newx[3];real newy[3]; real newz[3];
+    }cellrotation
+    ={f,{1,0,0}
+        ,{0,1,0}
+        ,{0,0,1}};
+
+};
+
