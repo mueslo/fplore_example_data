@@ -9,24 +9,24 @@
 section header{
 
     struct {char[*] mainversion;char[*] subversion;} version
-    ={"14.00","M-CPA"};
+    ={"18.00","M-CPA"};
 
 
     struct {char[*] hostname;char[*] date;char[*] by;} last_changes
-    ={"localhost.localdomain","Sat Nov  4 19:22:49 2017","fedit (14.00-49-x86_64)"};
+    ={"newton","Thu Oct 31 15:40:42 2019","fedit (18.00-52-x86_64)"};
 
-    char[*] compound="YbIr2Si2";
+    char[*] compound="YbRh2Si2";
 };
 
 
 section structure_information{
 
     struct {int type;char[*] description;} structure_type
-    ={1,"Crystal"};
+    ={1,"Crystal   "};
 
 
-    struct {int number;char[*] symbol;} spacegroup
-    ={139,"I4/MMM"};
+    struct {char[*] number;char[*] setting;char[*] symbol;} spacegroup
+    ={"139","default","I 4/m m m (unique)"};
 
     int subgroupgenerators[*]={
     };
@@ -34,18 +34,22 @@ section structure_information{
     struct {int type;char[*] description;} lengthunit
     ={2,"Angstroem"};
 
-    real lattice_constants[3]={4.0345,4.0345,9.828
+    real lattice_constants[3]={4.010,4.010,9.841
     };
     real axis_angles[3]={90.,90.,90.
     };
+
+    struct {logical active;real newx[3];real newz[3];} cellrotation
+    ={f,{1,0,0},{0,0,1}};
+
     int max_L=4;
     int nsort=3;
 
     struct {char[2] element;real tau[3];} wyckoff_positions[nsort]
     ={
-        {"Yb",{0,0,0}}
-        ,{"Ir",{1/2,0,-1/4}}
-        ,{"Si",{0,0,0.3807989986}}        
+        {"Yb",{0.,0.,0.}}
+        ,{"Rh",{0.,1/2,1/4}}
+        ,{"Si",{0,0,0.375}}
     };
 
 };
@@ -55,25 +59,22 @@ section structure_dependend{
 
     struct {char[2] atom;real concentration;} concentrations[nsort]
     ={
-        {"Yb",1.0}
-        ,{"Ir",1.0}
-        ,{"Si",1.0}        
+        {"Yb",1}
+        ,{"Rh",1}
+        ,{"Si",1}
     };
 
 
     struct {char[2] element;real split;} initial_spin_split[nsort]
     ={
-        {"Yb",2.0}
-        ,{"Ir",2.0}
-        ,{"Si",2.0}        
+        {"Yb",2}
+        ,{"Rh",2}
+        ,{"Si",2}
     };
 
 
     struct {int sort;char[2] state;real spinup[7];real spindn[7];} core_occupation[*]
     ={
-        {1,"4f",{13/14,13/14,13/14,13/14
-            ,13/14,13/14,13/14},{13/14,13/14,13/14,13/14
-            ,13/14,13/14,13/14}}        
     };
 
 
@@ -81,13 +82,18 @@ section structure_dependend{
     ={
         {"$~G",{0,0,0}}
         ,{"X",{1/2,1/2,0}}
-        ,{"P",{1/2,1/2,0.20525559095}}
-        ,{"M",{0,0,0.410510375}}
-        ,{"N",{1/2,0,0.20525559095}}
-        ,{"S0",{0.584260152,0,0}}
-        ,{"S",{0.415739087,0,0.410510375}}
-        ,{"G",{0.415739087,0.415739087,0.410510375}}
-        ,{"R",{0.584260152,0.415739087,0}}        
+        ,{"Y",{0.58301953298065,0.41698046701935,0}}
+        ,{"$~S",{0.58301953298065,0,0}}
+        ,{"$~G",{0,0,0}}
+        ,{"Z",{0,0,0.40747891474444}}
+        ,{"$~S$_1$.",{0.41698046701935,0,0.40747891474444}}
+        ,{"N",{1/2,0,0.20373945737222}}
+        ,{"P",{1/2,1/2,0.20373945737222}}
+        ,{"Y$_1$.",{0.41698046701935,0.41698046701935,0.40747891474444}}
+        ,{"Z",{0,0,0.40747891474444}}
+        ,{"<BREAK>",{0,0,0}}
+        ,{"X",{1/2,1/2,0}}
+        ,{"P",{1/2,1/2,0.20373945737222}}
     };
 
 };
@@ -108,7 +114,7 @@ section mesh{
 section brillouin{
 
     struct {logical metal;int nkxyz[3];} bzone_integration
-    ={t,{16,16,16}};
+    ={t,{12,12,12}};
 
 
     struct {int ne;real range;real width;int norder;} mp_bzone_integration
@@ -126,7 +132,7 @@ section brillouin{
 section bandstructure_plot{
 
     struct {logical bandplot;logical read_sympoints;int ndivisions;real emin;real emax;int nptdos;logical plot_idos;logical plot_ndos;logical restrict_bands_to_window;logical coeffout;} bandplot_control
-    ={t,t,50,-2,2,1000,f,f,f,f};
+    ={t,t,50,-10,5,1000,f,f,f,f};
 
 
     struct {logical bandweights;logical bweight_rot;real z_axis[3];real x_axis[3];char[*] bwdfilename;
@@ -146,7 +152,7 @@ section iteration_control{
 
 
     struct {int scheme;char[*] description;} iteration_version
-    ={2,"Iterat   : Hyperspace interpolation"};
+    ={4,"LCIterat : Iterat with linear progress control"};
 
 
     struct {int type;char[*] description;} iteration_convergence_condition
@@ -177,7 +183,7 @@ section forces{
     struct {int mode;char[*] description;} force_mode
     ={1,"No forces"};
 
-    int geomopt_sites[*]={3
+    int geomopt_sites[*]={
     };
 };
 
@@ -185,7 +191,7 @@ section forces{
 section options{
 
     struct {int mspin;logical initial_spin_split;} spin
-    ={2,f};
+    ={1,f};
 
 
     struct {int type;char[*] description;} xc_potential
@@ -237,6 +243,7 @@ section options{
     ={1.0,f};
 
     logical calc_etot=t;
+    logical usedatadirectories=f;
 };
 
 
@@ -363,8 +370,12 @@ section Advanced_output{
     };
 
 
-    struct {logical active;} topological_insulator
-    ={f};
+    struct {logical active;logical forceusewanniercenters;int homooffset;
+        struct {int nint;int nky;} wanniercenters;
+    } topological_insulator
+    ={f,f,4
+        ,{40,100}
+    };
 
 
     struct {logical active;logical jointdos;logical bandoutput;logical stopafter;
@@ -372,6 +383,37 @@ section Advanced_output{
     } optics
     ={f,f,f,f
         ,{1000,0,10}
+    };
+
+};
+
+
+section dHvA{
+
+    struct {logical active;int bandsup[*];int bandsdown[*];real isovalue;int subdiv[3];int bisections;char[*] wandata;logical deleteoldfiles;logical needbandweights;char[*] statefile;
+        struct {int weightindex;real coef;} energyshift[*];
+    } isosurface
+    ={f,{},{},0.,{12,12,12},0,"",t,f,""
+        ,{
+        }
+    };
+
+
+    struct {
+        struct {char[*] label;real field[3];} fields[*];
+        int bands[*];int parts[*];
+        struct {int type;char[*] description;} spin;
+        int nphi;int phifrom;int phito;int nplane;int planefrom;int planeto;real areachainthreshold;real orbitcomparisonsearchoffset;real orbitsampleportion;real arearadiusfactor;real smoothnessthreshold;flag outputoptions[*];flag debugoptions[*];
+    } dhva
+    ={
+         {
+            {"[010]",{0.,1.,0.}}
+            ,{"[001]",{0.,0.,1.}}
+        }
+        ,{},{}
+        ,{0,"both"}
+        ,30,-1,-2,100,-1,-2,0.1,0.2,0.1,1.,1.,{show_non_closed(-),output_orbits(-),output_extremal_orbits(+)},{determine_area_chain_extrema(-),sort_area_chains(-),sort_extrema_chains(-),extend_periodic_area_chains(-)
+        ,collect_orbits(-),calc_orbit(-),run(+)}
     };
 
 };
